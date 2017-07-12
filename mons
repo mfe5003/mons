@@ -143,6 +143,7 @@ main() {
     done
 
     XRANDR="$(command -v xrandr)"
+    
     if [ "$?" -ne 0 ]; then
         echo 'xrandr: command not found.' ; exit 1
     fi
@@ -151,9 +152,20 @@ main() {
     [ -z "${XRANDR}" ]  && { echo 'xrandr: command not found.' ; exit 1; }
 
     if $mFlag ; then
+	PREVCNT=0
         while true; do
-            if [ "$("${XRANDR}" | grep ' connect' | wc -l)" -eq 1 ]; then
-                "${XRANDR}" --auto
+	    CNT="$("${XRANDR}" | grep ' connect' | wc -l)"
+	    if [ $CNT -ne $PREVCNT ]; then
+		PREVCNT=$CNT
+                plug_mons="$("${XRANDR}" | grep ' connect' | cut -d' ' -f1)"
+                if [ $CNT -eq 1 ]; then
+                    "${XRANDR}" --auto
+                fi
+                if [ ${CNT} -eq 2 ]; then
+	            "${XRANDR}" --auto
+                    "${XRANDR}" --output "$(list_get 1 "${plug_mons}")" \
+		        "$(arg2xrandr "left")" "$(list_head "${plug_mons}")"
+                fi
             fi
             sleep 1
         done

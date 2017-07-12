@@ -5,6 +5,8 @@ Mons
 
 *"Mons is a Shell script to quickly manage 2-monitors display using xrandr."*
 
+*Edited deamon to also automatically configure the second monitor when detected.
+
 ## Perks
 
 * [x] **No requirement**: POSIX-compliant.
@@ -24,7 +26,7 @@ $ pacaur -S mons
 * Manual
 
 ```
-$ git clone --recursive https://github.com/Ventto/mons.git
+$ git clone --recursive https://github.com/mfe5003/mons.git
 $ cd mons
 $ sudo make install
 ```
